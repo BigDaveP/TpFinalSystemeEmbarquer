@@ -36,9 +36,6 @@
 
 #include <iostream>
 
-#include "MyButton.h"
-MyButton *myButtonT4 = new MyButton();
-MyButton *myButtonT5 = new MyButton();
 
 #include "MyStone.h"
 MyStone *myStone;
@@ -161,10 +158,8 @@ void readStoneData() {
 void setup() {
   Serial.begin(9600);
   mytemp->init();
-  Serial.println("Stone serial Txd is on pin: "+String(TXD2));
-  Serial.println("Stone serial Rxd is on pin: "+String(RXD2));
   myStone = new MyStone(115200, SERIAL_8N1, RXD2, TXD2);
-  cout << std::string("Début de l'exemple Stone de base pour le ESP32")  << "\n";
+  std::cout << std::string("Début de l'exemple Stone de base pour le ESP32")  << "\n";
 }
 
 void loop() { 
@@ -172,19 +167,4 @@ void loop() {
   readStoneData(); //Appel de la fonction readStoneData
   delay(2000);
   myStone->changePage("window1");
-  int buttonActionT4 = myButtonT4->checkMyButton();
-      if(buttonActionT4 > 2)  {  //Si appuyé plus de 0.2 secondes
-          Serial.println("Button T4 pressed");
-          }
-
-  int buttonActionT5 = myButtonT5->checkMyButton();
-      if(buttonActionT5 > 2)  {  //Si appuyé plus de 0.2 secondes
-          Serial.println("Button T5 pressed");
-
-          char cmdFormat2[99];
-          strcpy(cmdFormat2, "ST<{\"cmd_code\":\"sys_version\",\"type\":\"system\"}>ET");
-          std::cout << cmdFormat2 << "\n";
-          myStone->writeIt((char*)cmdFormat2);
-
-          }
   }
